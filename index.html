@@ -1,0 +1,190 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Mahir Labs</title>
+<meta name="description" content="Mahir Labs — experiments in robotics, autonomy, and multi-sensor fusion.">
+<meta name="theme-color" content="#1f1f1d">
+<meta property="og:title" content="Mahir Labs">
+<meta property="og:description" content="Experiments in robotics, autonomy, and multi-sensor fusion.">
+<meta property="og:image" content="https://mahirlabs.github.io/assets/og-image.png">
+<meta property="og:url" content="https://mahirlabs.github.io/">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" type="image/png" sizes="32x32" href="assets/favicon-32.png">
+<link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    /* sampled from the logo */
+    --bg:#1f1f1d; --panel:rgba(26,26,24,.9); --fg:#f2efe8; --muted:#a39e92; --line:#34322c;
+    --gold:#d4a64a; --gold-hi:#e9c46a; --red:#d8342a;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{height:100%}
+  body{
+    background:var(--bg); color:var(--fg);
+    font-family:"Space Grotesk",system-ui,sans-serif;
+    display:flex; flex-direction:column; min-height:100vh; overflow-x:hidden;
+  }
+  canvas{position:fixed; inset:0; width:100%; height:100%; z-index:0; opacity:.6; pointer-events:none}
+  main{
+    position:relative; z-index:1; flex:1;
+    display:grid; grid-template-columns:1.15fr .85fr; align-items:center; gap:40px;
+    width:min(1080px,100%); margin:0 auto; padding:64px 16px;
+  }
+  .logo{justify-self:center; width:min(380px,100%); aspect-ratio:1}
+  .logo img{width:100%; height:100%; display:block; filter:drop-shadow(0 0 28px rgba(212,166,74,.18))}
+  .tag{
+    font-family:"JetBrains Mono",monospace; font-size:.8rem; color:var(--gold);
+    letter-spacing:.08em; text-transform:uppercase; margin-bottom:20px;
+    display:flex; align-items:center; gap:10px;
+  }
+  .dot{width:8px;height:8px;border-radius:50%;background:var(--red);
+       box-shadow:0 0 12px var(--red); animation:pulse 1.6s infinite}
+  @keyframes pulse{50%{opacity:.25}}
+  h1{font-size:clamp(2.6rem,7vw,4.6rem); line-height:1; letter-spacing:-.03em}
+  h1 span{color:var(--gold)}
+  .lede{margin-top:20px; font-size:clamp(1.05rem,2.2vw,1.25rem); color:var(--muted); max-width:44ch}
+  ul.focus{
+    list-style:none; margin-top:36px;
+    display:grid; grid-template-columns:repeat(2,1fr); gap:1px;
+    background:var(--line); border:1px solid var(--line);
+  }
+  ul.focus li{background:var(--panel); padding:16px; border-left:2px solid transparent; transition:border-color .15s}
+  ul.focus li:hover{border-left-color:var(--gold)}
+  ul.focus b{display:block; font-size:1rem; margin-bottom:6px}
+  ul.focus small{font-family:"JetBrains Mono",monospace; font-size:.75rem; color:var(--muted)}
+  .actions{margin-top:32px; display:flex; flex-wrap:wrap; gap:12px}
+  a.btn{
+    font-family:"JetBrains Mono",monospace; font-size:.85rem; text-decoration:none;
+    padding:11px 18px; border:1px solid var(--gold); color:var(--gold);
+    transition:background .15s,color .15s,border-color .15s;
+  }
+  a.btn:hover{background:var(--gold); color:var(--bg)}
+  a.btn.ghost{border-color:var(--line); color:var(--fg)}
+  a.btn.ghost:hover{border-color:var(--fg); background:transparent; color:var(--fg)}
+  a:focus-visible{outline:2px solid var(--gold-hi); outline-offset:3px}
+  footer{
+    position:relative; z-index:1; border-top:1px solid var(--line);
+    padding:18px 16px; font-family:"JetBrains Mono",monospace; font-size:.75rem; color:var(--muted);
+    display:flex; justify-content:space-between; flex-wrap:wrap; gap:8px;
+    width:min(1080px,100%); margin:0 auto;
+  }
+  @media (max-width:820px){
+    main{grid-template-columns:1fr; gap:28px; padding-top:40px}
+    .logo{order:-1; width:min(240px,70vw)}
+  }
+  @media (max-width:420px){ ul.focus{grid-template-columns:1fr} }
+  @media (prefers-reduced-motion:reduce){ .dot{animation:none} }
+</style>
+</head>
+<body>
+<canvas id="scan" aria-hidden="true"></canvas>
+
+<main>
+  <section>
+    <div class="tag"><span class="dot"></span>site under construction</div>
+    <h1>Mahir<span>/</span>Labs</h1>
+    <p class="lede">A place where I experiment with robotics — autonomy, perception, and making many sensors agree on one version of the world.</p>
+
+    <ul class="focus">
+      <li><b>Multi-sensor fusion</b><small>LiDAR · camera · GNSS RTK · IMU</small></li>
+      <li><b>Localization &amp; SLAM</b><small>mapping · state estimation</small></li>
+      <li><b>Time sync</b><small>PTP · PPS · calibration</small></li>
+      <li><b>UGV autonomy</b><small>ROS 2 · Nav2 · F1TENTH</small></li>
+    </ul>
+
+    <div class="actions">
+      <a class="btn" href="https://github.com/MahirLabs">github.com/MahirLabs →</a>
+      <a class="btn ghost" href="https://github.com/orgs/MahirLabs/repositories">repositories</a>
+    </div>
+  </section>
+
+  <div class="logo" id="logo">
+    <picture>
+      <source srcset="assets/logo.webp" type="image/webp">
+      <img src="assets/logo.png" alt="Mahir Labs logo" width="512" height="512" fetchpriority="high">
+    </picture>
+  </div>
+</main>
+
+<footer>
+  <span>© <span id="yr"></span> Mahir Labs</span>
+  <span>Malaysia · ROS 2 Jazzy</span>
+</footer>
+
+<script>
+document.getElementById('yr').textContent = new Date().getFullYear();
+
+// Decorative 2D LiDAR sweep, origin at the logo centre.
+(() => {
+  const c = document.getElementById('scan'), ctx = c.getContext('2d');
+  const logo = document.getElementById('logo');
+  const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  let W, H, cx, cy, R, rMin, obstacles = [], pts = [], ang = 0;
+
+  function resize(){
+    const dpr = Math.min(devicePixelRatio || 1, 2);
+    W = c.clientWidth; H = c.clientHeight;
+    c.width = W * dpr; c.height = H * dpr; ctx.setTransform(dpr,0,0,dpr,0,0);
+    const b = logo.getBoundingClientRect();
+    cx = b.left + b.width / 2; cy = b.top + b.height / 2;
+    rMin = b.width * 0.52;                      // start rings just outside the emblem
+    R = Math.hypot(Math.max(cx, W - cx), Math.max(cy, H - cy));
+    obstacles = Array.from({length: 10}, () => {
+      const a = Math.random() * Math.PI * 2, d = rMin + 60 + Math.random() * R * 0.55;
+      return {x: cx + Math.cos(a) * d, y: cy + Math.sin(a) * d, r: 18 + Math.random() * 50};
+    });
+    pts = [];
+    if (reduce) staticScan();
+  }
+
+  // Ray–circle intersection; null if nothing within range.
+  function cast(a){
+    const dx = Math.cos(a), dy = Math.sin(a); let best = R;
+    for (const o of obstacles){
+      const fx = cx - o.x, fy = cy - o.y;
+      const b = fx*dx + fy*dy, k = fx*fx + fy*fy - o.r*o.r, disc = b*b - k;
+      if (disc >= 0){ const t = -b - Math.sqrt(disc); if (t > rMin && t < best) best = t; }
+    }
+    return best < R ? {x: cx + dx*best, y: cy + dy*best, life: 1} : null;
+  }
+
+  function draw(){
+    ctx.clearRect(0, 0, W, H);
+    ctx.strokeStyle = 'rgba(212,166,74,.07)';
+    for (let r = rMin + 40; r < R; r += 80){ ctx.beginPath(); ctx.arc(cx, cy, r, 0, Math.PI*2); ctx.stroke(); }
+
+    if (!reduce){
+      const g = ctx.createRadialGradient(cx, cy, rMin, cx, cy, R);
+      g.addColorStop(0, 'rgba(212,166,74,.2)'); g.addColorStop(1, 'rgba(212,166,74,0)');
+      ctx.fillStyle = g; ctx.beginPath();
+      ctx.arc(cx, cy, R, ang - 0.25, ang); ctx.arc(cx, cy, rMin, ang, ang - 0.25, true);
+      ctx.closePath(); ctx.fill();
+    }
+    for (const p of pts){ ctx.fillStyle = `rgba(216,52,42,${p.life})`; ctx.fillRect(p.x-1, p.y-1, 2.2, 2.2); }
+  }
+
+  function staticScan(){
+    for (let a = 0; a < Math.PI*2; a += 0.004){ const p = cast(a); if (p){ p.life = .7; pts.push(p); } }
+    draw();
+  }
+
+  function frame(){
+    for (let i = 0; i < 6; i++){ const p = cast(ang + i * 0.004); if (p) pts.push(p); }
+    pts = pts.filter(p => (p.life -= 0.004) > 0);
+    draw();
+    ang += 0.025;
+    requestAnimationFrame(frame);
+  }
+
+  addEventListener('resize', resize);
+  resize();
+  if (!reduce) frame();
+})();
+</script>
+</body>
+</html>
